@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  title: WhereHouse API
+  version: '1.0'
+  description: WhereHouse API V1
+  contact:
+    name: wherehousegm
+    email: wherehousegm@gmail.com
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /v1/warehouses:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: get-v1-warehouses
+      description: 창고 목록을 조회하는 API입니다
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: |-
+            Bearer 토큰 값입니다.
+            jwt 토큰을 사용합니다.
+
+            ex. Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: |-
+            사용자가 입력한 검색 키워드입니다.
+
+            ex. '경기 화성'
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: 창고들 offset 값입니다.
+          required: true
+        - schema:
+            type: integer
+          in: query
+          required: true
+          name: limit
+components:
+  schemas: {}
