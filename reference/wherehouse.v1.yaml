@@ -700,6 +700,15 @@ paths:
                   - tokenType
         '400':
           description: Bad Request
+        '409':
+          description: "Conflict\n중복된 이메일로 회원가입을 시도했을 때입니다 "
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
       operationId: get-v1-auth-sign-up
       requestBody:
         content:
@@ -731,6 +740,26 @@ paths:
                   - accessToken
                   - refreshToken
                   - tokenType
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: |-
+            Not Found
+            존재하지 않는 사용자 정보로 로그인 시도했을때
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
       description: 로그인 할 때 사용함
       requestBody:
         content:
@@ -739,50 +768,6 @@ paths:
               $ref: '#/components/schemas/SignInForm'
       tags:
         - auth
-  /v1/auth/sign-out:
-    post:
-      summary: 로그아웃
-      operationId: post-v1-sign-out
-      responses:
-        '200':
-          description: |-
-            Ok
-            로그아웃 성공했을때
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-        '401':
-          description: |-
-            Unauthorized
-            로그인이 안돼있을 때
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-      tags:
-        - auth
-      description: 로그아웃 할 때 사용함
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: |-
-            Bearer 토큰 값입니다.
-            jwt 토큰을 사용합니다.
-          required: true
-    parameters: []
   '/v1/users/{userId}':
     parameters:
       - schema:
