@@ -20,7 +20,7 @@ info:
     name: wherehousegm
     email: wherehousegm@gmail.com
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'https://wherehouse-backend.herokuapp.com/'
 paths:
   /v1/warehouses:
     get:
