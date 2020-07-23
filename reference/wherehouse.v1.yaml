@@ -86,11 +86,9 @@ paths:
           in: query
           name: offset
           description: 창고들 offset 값입니다.
-          required: true
         - schema:
             type: integer
           in: query
-          required: true
           name: limit
           description: '불러올 창고 목록 개수입니다 '
     /v1/warehouses: null
