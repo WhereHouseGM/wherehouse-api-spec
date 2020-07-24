@@ -64,11 +64,8 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/SimplifiedWarehouseInfo'
-                  message:
-                    type: string
                 required:
                   - warehouses
-                  - message
       operationId: get-v1--warehouses
       description: |-
         창고 목록을 조회하는 API입니다
@@ -105,12 +102,8 @@ paths:
                 properties:
                   warehouse:
                     $ref: '#/components/schemas/DetailedWarehouseInfo'
-                  message:
-                    type:
-                      - string
-                      - 'null'
                 required:
-                  - message
+                  - warehouse
               examples: {}
         '400':
           description: |-
@@ -182,13 +175,8 @@ paths:
                 properties:
                   warehouse:
                     $ref: '#/components/schemas/DetailedWarehouseInfo'
-                  message:
-                    type:
-                      - string
-                      - 'null'
                 required:
                   - warehouse
-                  - message
         '400':
           description: |-
             Bad Request
@@ -262,10 +250,8 @@ paths:
                 properties:
                   warehouse:
                     $ref: '#/components/schemas/DetailedWarehouseInfo'
-                  message:
-                    type:
-                      - string
-                      - 'null'
+                required:
+                  - warehouse
         '400':
           description: |-
             Bad Request
@@ -334,9 +320,6 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  message:
-                    type: string
         '400':
           description: |-
             Bad Request
@@ -408,13 +391,8 @@ paths:
                 properties:
                   warehouse:
                     $ref: '#/components/schemas/WarehouseReviewInfo'
-                  message:
-                    type:
-                      - string
-                      - 'null'
                 required:
                   - warehouse
-                  - message
         '400':
           description: |-
             Bad Request
@@ -487,12 +465,8 @@ paths:
                 properties:
                   warehouse:
                     $ref: '#/components/schemas/WarehouseReviewInfo'
-                  message:
-                    type:
-                      - string
-                      - 'null'
                 required:
-                  - message
+                  - warehouse
               examples: {}
           headers: {}
         '400':
@@ -573,9 +547,6 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  message:
-                    type: string
         '400':
           description: |-
             Bad Request
@@ -640,11 +611,8 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/WarehouseTypeInfo'
-                  message:
-                    type: string
                 required:
                   - types
-                  - message
         '400':
           description: |-
             Bad Request
@@ -788,11 +756,8 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/SimplifiedUserInfo'
-                  message:
-                    type: string
                 required:
                   - user
-                  - message
         '400':
           description: |-
             Bad Request
@@ -852,8 +817,8 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/SimplifiedUserInfo'
-                  message:
-                    type: string
+                required:
+                  - user
         '400':
           description: |-
             Bad Request
@@ -903,6 +868,97 @@ paths:
               $ref: '#/components/schemas/EditUserForm'
       tags:
         - users
+  /v1/user-demands:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - user-demands
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userDemands:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserDemandInfo'
+                required:
+                  - userDemands
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+      operationId: get-v1-user-demands
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: |-
+            Bearer 토큰 값입니다.
+            jwt 토큰을 사용합니다.
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: limit 값입니다
+        - schema:
+            type: string
+          in: query
+          name: offset
+          description: offset 값입니다
+    post:
+      summary: ''
+      operationId: post-v1-user-demands
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userDemand:
+                    $ref: '#/components/schemas/UserDemandInfo'
+                required:
+                  - userDemand
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: |-
+            Bearer 토큰 값입니다.
+            jwt 토큰을 사용합니다.
+          required: true
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserDemandForm'
 components:
   schemas:
     SimplifiedWarehouseInfo:
@@ -1024,9 +1080,7 @@ components:
           type: boolean
           description: 경비업체 존재 여부
         securityCompanyName:
-          type:
-            - 'null'
-            - string
+          type: string
           description: '경비업체 이름, 없으면 null'
         doorlockExist:
           type: boolean
@@ -1045,9 +1099,7 @@ components:
           type: boolean
           description: 보험 가입여부
         insuranceName:
-          type:
-            - string
-            - 'null'
+          type: string
           description: '보험사 이름, 없으면 null'
         canPickup:
           type: boolean
@@ -1081,12 +1133,10 @@ components:
         - minUseTerm
         - cctvExist
         - securityCompanyExist
-        - securityCompanyName
         - doorlockExist
         - airConditioningType
         - workerExist
         - insuranceExist
-        - insuranceName
         - canPickup
         - canPark
         - attachments
@@ -1469,6 +1519,7 @@ components:
     SignUpForm:
       title: NewUserForm
       type: object
+      description: ''
       properties:
         name:
           type: string
@@ -1486,13 +1537,9 @@ components:
             - OWNER
           description: '사용자 종류 (SHIPPER: 화주, OWNER: 창고주)'
         telephoneNumber:
-          type:
-            - string
-            - 'null'
+          type: string
         companyName:
-          type:
-            - string
-            - 'null'
+          type: string
         phoneNumber:
           type: string
       required:
@@ -1500,10 +1547,7 @@ components:
         - email
         - password
         - type
-        - telephoneNumber
-        - companyName
         - phoneNumber
-      description: ''
     SignInForm:
       title: SignInForm
       type: object
@@ -1537,12 +1581,100 @@ components:
             - OWNER
           description: '사용자 종류 (SHIPPER: 화주, OWNER: 창고주)'
         telephoneNumber:
-          type:
-            - string
-            - 'null'
+          type: string
         companyName:
-          type:
-            - string
-            - 'null'
+          type: string
         phoneNumber:
           type: string
+    UserDemandInfo:
+      title: UserDemandInfo
+      type: object
+      properties:
+        id:
+          type: integer
+        minSize:
+          type: integer
+          description: 필요한 창고 최소 평수
+        maxSize:
+          type: integer
+          description: 필요한 창고 최대 평수
+        startDate:
+          type: string
+          description: '임대 시작할 날짜 '
+        endDate:
+          type: string
+          description: 임대 끝낼 날짜
+        username:
+          type: string
+          description: 신청자 이름
+        companyName:
+          type: string
+          description: 회사명
+        phoneNumber:
+          type: string
+          description: 신청자 휴대폰 번호
+        email:
+          type: string
+          description: 신청자 이메일
+        description:
+          type: string
+          description: 필요한 창고에 대한 추가 설명
+        warehouseType:
+          $ref: '#/components/schemas/WarehouseTypeInfo'
+      required:
+        - id
+        - minSize
+        - maxSize
+        - startDate
+        - endDate
+        - username
+        - companyName
+        - phoneNumber
+        - email
+        - description
+        - warehouseType
+    NewUserDemandForm:
+      title: NewUserDemandForm
+      type: object
+      properties:
+        minSize:
+          type: integer
+          description: 필요한 창고 최소 평수
+        maxSize:
+          type: integer
+          description: 필요한 창고 최대 평수
+        startDate:
+          type: string
+          description: '임대 시작할 날짜 '
+        endDate:
+          type: string
+          description: 임대 끝낼 날짜
+        username:
+          type: string
+          description: 신청자 이름
+        companyName:
+          type: string
+          description: 회사명
+        phoneNumber:
+          type: string
+          description: 신청자 휴대폰 번호
+        email:
+          type: string
+          description: 신청자 이메일
+        description:
+          type: string
+          description: 필요한 창고에 대한 추가 설명
+        warehouseTypeId:
+          type: integer
+          description: 필요한 창고 타입 id
+      required:
+        - minSize
+        - maxSize
+        - startDate
+        - endDate
+        - username
+        - companyName
+        - phoneNumber
+        - email
+        - description
+        - warehouseTypeId
