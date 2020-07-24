@@ -944,6 +944,15 @@ paths:
                     type: string
                 required:
                   - message
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
       parameters:
         - schema:
             type: string
@@ -959,6 +968,58 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/NewUserDemandForm'
+  '/v1/users/{userId}/demands':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  demands:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserDemandInfo'
+                required:
+                  - demands
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      operationId: get-v1-users-userId-demands
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: |-
+            Bearer 토큰 값입니다.
+            jwt 토큰을 사용합니다.
+          required: true
 components:
   schemas:
     SimplifiedWarehouseInfo:
