@@ -1621,6 +1621,9 @@ components:
           description: 필요한 창고에 대한 추가 설명
         warehouseType:
           $ref: '#/components/schemas/WarehouseTypeInfo'
+        address:
+          type: string
+          example: 경기 화성
       required:
         - id
         - minSize
@@ -1633,6 +1636,7 @@ components:
         - email
         - description
         - warehouseType
+        - address
     NewUserDemandForm:
       title: NewUserDemandForm
       type: object
@@ -1667,6 +1671,10 @@ components:
         warehouseTypeId:
           type: integer
           description: 필요한 창고 타입 id
+        address:
+          type: string
+          description: 창고가 위치한 지역 주소
+          example: 경기 화성
       required:
         - minSize
         - maxSize
@@ -1678,3 +1686,4 @@ components:
         - email
         - description
         - warehouseTypeId
+        - address
