@@ -885,7 +885,7 @@ paths:
         - users
   /v1/auth/refresh-token:
     post:
-      summary: ''
+      summary: 액세스 토큰 재발급
       operationId: post-v1-auth-refresh-token
       responses:
         '200':
@@ -927,6 +927,8 @@ paths:
           description: |-
             Bearer 토큰 값입니다.
             jwt 토큰을 사용합니다.
+      tags:
+        - auth
 components:
   schemas:
     SimplifiedWarehouseInfo:
