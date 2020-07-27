@@ -866,6 +866,28 @@ paths:
                 properties:
                   message:
                     type: string
+        '404':
+          description: |-
+            Not Found
+            사용자가 존재하지 않을때
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: |-
+            Conflict
+            중복된 이메일로 수정하려 했을 때
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
       description: 사용자 정보를 수정함
       parameters:
         - schema:
@@ -927,6 +949,7 @@ paths:
           description: |-
             Bearer 토큰 값입니다.
             jwt 토큰을 사용합니다.
+          required: true
       tags:
         - auth
 components:
