@@ -861,6 +861,7 @@ paths:
             Bearer 토큰 값입니다.
             jwt 토큰을 사용합니다.
           name: Authorization
+          required: true
       requestBody:
         content:
           application/json:
@@ -1020,6 +1021,39 @@ paths:
             Bearer 토큰 값입니다.
             jwt 토큰을 사용합니다.
           required: true
+  /v1/auth/refresh-token:
+    post:
+      summary: ''
+      operationId: post-v1-auth-refresh-token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                  tokenType:
+                    type: string
+                    description: "토큰 종류\naccessToken과 concat해서 사용하면 됨\n\nex. `${tokenType} ${accessToken}` \n\n     -> Bearer ${accessToken}"
+                    default: Bearer
+                required:
+                  - accessToken
+                  - refreshToken
+                  - tokenType
+      description: 액세스 토큰을 재발급할 때 사용합니다
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: |-
+            Bearer 토큰 값입니다.
+            jwt 토큰을 사용합니다.
 components:
   schemas:
     SimplifiedWarehouseInfo:
@@ -1615,7 +1649,7 @@ components:
       properties:
         email:
           type: string
-          format: uri
+          format: email
         password:
           type: string
           description: sha256으로 인코딩한 값 (64바이트)
