@@ -660,6 +660,8 @@ paths:
                     type: string
                     description: "토큰 종류\naccessToken과 concat해서 사용하면 됨\n\nex. `${tokenType} ${accessToken}` \n\n     -> Bearer ${accessToken}"
                     default: Bearer
+                  user:
+                    $ref: '#/components/schemas/SimplifiedUserInfo'
                 required:
                   - accessToken
                   - refreshToken
@@ -702,6 +704,8 @@ paths:
                     type: string
                     description: "토큰 종류\naccessToken과 concat해서 사용하면 됨\n\nex. `${tokenType} ${accessToken}` \n\n     -> Bearer ${accessToken}"
                     default: Bearer
+                  user:
+                    $ref: '#/components/schemas/SimplifiedUserInfo'
                 required:
                   - accessToken
                   - refreshToken
@@ -748,7 +752,7 @@ paths:
         - users
       responses:
         '200':
-          description: OK
+          description: Ok
           content:
             application/json:
               schema:
@@ -770,9 +774,7 @@ paths:
                   message:
                     type: string
         '401':
-          description: |-
-            Unauthorized
-            사용자가 로그인 하지 않았을때
+          description: "Unauthorized\n사용자가 로그인 하지 않았을때 또는 access token 값에 이상이 있을 때 "
           content:
             application/json:
               schema:
@@ -784,6 +786,18 @@ paths:
           description: |-
             Forbidden
             사용자 정보를 볼 수 있는 권한이 없을 때
+            (다른 사용자의 access token으로 조회를 시도할 때 )
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: |-
+            Not Found
+            사용자가 존재하지 않을때
           content:
             application/json:
               schema:
@@ -869,158 +883,6 @@ paths:
               $ref: '#/components/schemas/EditUserForm'
       tags:
         - users
-  /v1/user-demands:
-    get:
-      summary: Your GET endpoint
-      tags:
-        - user-demands
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  userDemands:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/UserDemandInfo'
-                required:
-                  - userDemands
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-      operationId: get-v1-user-demands
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: |-
-            Bearer 토큰 값입니다.
-            jwt 토큰을 사용합니다.
-          required: true
-        - schema:
-            type: string
-          in: query
-          name: limit
-          description: limit 값입니다
-        - schema:
-            type: string
-          in: query
-          name: offset
-          description: offset 값입니다
-    post:
-      summary: ''
-      operationId: post-v1-user-demands
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  userDemand:
-                    $ref: '#/components/schemas/UserDemandInfo'
-                required:
-                  - userDemand
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: |-
-            Bearer 토큰 값입니다.
-            jwt 토큰을 사용합니다.
-          required: true
-      description: ''
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewUserDemandForm'
-  '/v1/users/{userId}/demands':
-    parameters:
-      - schema:
-          type: string
-        name: userId
-        in: path
-        required: true
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  demands:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/UserDemandInfo'
-                required:
-                  - demands
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-      operationId: get-v1-users-userId-demands
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: |-
-            Bearer 토큰 값입니다.
-            jwt 토큰을 사용합니다.
-          required: true
   /v1/auth/refresh-token:
     post:
       summary: ''
@@ -1045,6 +907,17 @@ paths:
                   - accessToken
                   - refreshToken
                   - tokenType
+        '401':
+          description: 'refresh token 유효기간 지났을 때 '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
       description: 액세스 토큰을 재발급할 때 사용합니다
       parameters:
         - schema:
@@ -1292,6 +1165,8 @@ components:
         phoneNumber:
           type: string
           description: 사용자 휴대폰 번호
+        companyName:
+          type: string
       required:
         - id
         - name
@@ -1299,6 +1174,7 @@ components:
         - type
         - telephoneNumber
         - phoneNumber
+        - companyName
     NewWarehouseForm:
       title: NewWarehouseForm
       type: object
