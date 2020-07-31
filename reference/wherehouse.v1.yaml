@@ -997,16 +997,13 @@ components:
       required:
         - latitude
         - longitude
-    DetailedWarehouseInfo:
-      title: DetailedWarehouse
+    GeneralWarehouseDetailInfo:
+      title: GeneralWarehouseDetailInfo
       type: object
       description: ''
       properties:
         id:
           type: integer
-        name:
-          type: string
-          description: 창고 이름
         type:
           type: string
           enum:
@@ -1019,47 +1016,10 @@ components:
             - CONTAINER
           description: |
             창고 종류
-        owner:
-          $ref: '#/components/schemas/SimplifiedUserInfo'
         size:
           type: integer
           description: '창고 평 수 (단위: 평)'
           example: 32
-        address:
-          type: string
-          description: 창고 주소
-          example: 경기 성남시 야탑동 장미로 55
-        addressDetail:
-          type: string
-          description: 칭고 상세주소
-          example: 108동 101호
-        availableWeekdays:
-          type: integer
-          description: |-
-            사용 가능한 요일에 대한 이진 플래그
-
-            2^0~2^6가 일~토에 매칭됨
-
-            ex.
-            모든 요일 불가능 -> 0
-            일요일만 가능 -> 1 (2^0)
-            월요일만 가능 -> 2 (2^1)
-            일요일, 월요일만 가능 -> 3 (2^0 | 2^1)
-            수요일만 가능 -> 16 (2^4)
-          example: 0
-        openAt:
-          type: string
-          description: 창고 여는 시간
-          format: time
-        closeAt:
-          type: string
-          description: '창고 닫는 시간 '
-          format: time
-        availableTimeDetail:
-          type: string
-          description: |
-            창고 운영시간에 대한 추가 정보
-          example: 금요일엔 1시간 일찍 닫음
         monthlyFee:
           type: integer
           description: '월세 (단위: 만원)'
@@ -1075,74 +1035,14 @@ components:
         minUseTerm:
           type: integer
           description: 최소 이 기간만큼은 사용해야함
-        cctvExist:
-          type: boolean
-          description: cctv 존재 여부
-        securityCompanyExist:
-          type: boolean
-          description: 경비업체 존재 여부
-        securityCompanyName:
-          type: string
-          description: '경비업체 이름, 없으면 null'
-        doorlockExist:
-          type: boolean
-          description: 잠금장치 존재 여부
-        airConditioningType:
-          type: string
-          enum:
-            - HEATING
-            - COOLING
-            - NONE
-          description: 냉난방 정보
-        workerExist:
-          type: boolean
-          description: 관리인력 존재 여부
-        insuranceExist:
-          type: boolean
-          description: 보험 가입여부
-        insuranceName:
-          type: string
-          description: '보험사 이름, 없으면 null'
-        canPickup:
-          type: boolean
-          description: |
-            픽업 서비스 여부
-        canPark:
-          type: boolean
-          description: 방문 시 주차 가능 여부
-        attachments:
-          type: array
-          description: 창고 이미지 url 목록
-          items:
-            $ref: '#/components/schemas/WarehouseAttachmentInfo'
-        location:
-          $ref: '#/components/schemas/LocationInfo'
       required:
         - id
-        - name
         - type
-        - owner
         - size
-        - address
-        - addressDetail
-        - availableWeekdays
-        - openAt
-        - closeAt
-        - availableTimeDetail
         - monthlyFee
         - depositFee
         - maintenanceFee
         - minUseTerm
-        - cctvExist
-        - securityCompanyExist
-        - doorlockExist
-        - airConditioningType
-        - workerExist
-        - insuranceExist
-        - canPickup
-        - canPark
-        - attachments
-        - location
     SimplifiedUserInfo:
       title: User
       type: object
@@ -1187,25 +1087,13 @@ components:
         name:
           type: string
           description: 창고 이름
-        type:
+        serviceType:
           type: string
-          enum:
-            - ROOM_TEMPERATURE
-            - LOW_TEMPERATURE
-            - BONDED
-            - SAVAGE
-            - HAZARDOUS
-            - SELF_STORAGE
-            - CONTAINER
           description: |
             창고 종류
-        size:
-          type: integer
-          description: '창고 평 수 (단위: 평)'
-          example: 32
-        description:
-          type: string
-          description: 상세설명
+          enum:
+            - GENERAL
+            - AGENCY
         address:
           type: string
           description: 창고 주소
@@ -1241,36 +1129,18 @@ components:
           description: |
             창고 운영시간에 대한 추가 정보
           example: 금요일엔 1시간 일찍 닫음
-        monthlyFee:
-          type: integer
-          description: '월세 (단위: 만원)'
-          example: 100
-        depositFee:
-          type: integer
-          description: '보증금 (단위: 만원)'
-          example: 5000
-        maintenanceFee:
-          type: integer
-          description: '관리비 (단위: 만원)'
-          example: 50
-        minUseTerm:
-          type: integer
-          description: 최소 이 기간만큼은 사용해야함
         cctvExist:
           type: boolean
           description: cctv 존재 여부
-          default: 'false'
         securityCompanyExist:
           type: boolean
           description: 경비업체 존재 여부
-          default: 'false'
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
         doorlockExist:
           type: boolean
           description: 잠금장치 존재 여부
-          default: 'false'
         airConditioningType:
           type: string
           enum:
@@ -1281,11 +1151,9 @@ components:
         workerExist:
           type: boolean
           description: 관리인력 존재 여부
-          default: 'false'
         insuranceExist:
           type: boolean
           description: 보험 가입여부
-          default: 'false'
         insuranceName:
           type: string
           description: '보험사 이름, 없으면 null'
@@ -1293,32 +1161,30 @@ components:
           type: boolean
           description: |
             픽업 서비스 여부
-          default: 'false'
         canPark:
           type: boolean
           description: 방문 시 주차 가능 여부
-          default: 'false'
         attachmentIds:
           type: array
-          description: '이미지 id 목록 '
+          description: 창고 이미지 url 목록
           items:
             type: integer
         location:
-          $ref: '#/components/schemas/NewLocationForm'
+          $ref: '#/components/schemas/LocationInfo'
+        additionalInfo:
+          oneOf:
+            - $ref: '#/components/schemas/AgencyWarehouseDetailInfo'
+            - $ref: '#/components/schemas/GeneralWarehouseDetailInfo'
+          description: '일반 창고와 에이전시 창고에 따라 추가정보 내용이 다름 '
       required:
         - name
-        - size
-        - description
+        - serviceType
         - address
         - addressDetail
         - availableWeekdays
         - openAt
         - closeAt
         - availableTimeDetail
-        - monthlyFee
-        - depositFee
-        - maintenanceFee
-        - minUseTerm
         - cctvExist
         - securityCompanyExist
         - doorlockExist
@@ -1329,6 +1195,7 @@ components:
         - canPark
         - attachmentIds
         - location
+        - additionalInfo
     NewAgencyWarehouseForm:
       title: NewAgencyWarehouseForm
       type: object
@@ -1457,113 +1324,6 @@ components:
         - canPark
         - attachmentIds
         - location
-    EditAgencyWarehouseForm:
-      title: NewAgencyWarehouseForm
-      type: object
-      properties:
-        name:
-          type: string
-          description: 창고 이름
-        type:
-          type: string
-          enum:
-            - 3PL
-            - FULLFILMENT
-          description: 에이전시 창고 종류
-        description:
-          type: string
-          description: 상세설명
-        storageType:
-          type: string
-          enum:
-            - PALLET
-            - BOX
-            - SPECIAL
-          description: 물건 보관 방식
-        address:
-          type: string
-          description: 창고 주소
-          example: 경기 성남시 야탑동 장미로 55
-        addressDetail:
-          type: string
-          description: 칭고 상세주소
-          example: 108동 101호
-        availableWeekdays:
-          type: integer
-          description: |-
-            사용 가능한 요일에 대한 이진 플래그
-
-            2^0~2^6가 일~토에 매칭됨
-
-            ex.
-            모든 요일 불가능 -> 0
-            일요일만 가능 -> 1 (2^0)
-            월요일만 가능 -> 2 (2^1)
-            일요일, 월요일만 가능 -> 3 (2^0 | 2^1)
-            수요일만 가능 -> 16 (2^4)
-          example: 0
-        openAt:
-          type: string
-          description: 창고 여는 시간
-          format: time
-        closeAt:
-          type: string
-          description: '창고 닫는 시간 '
-          format: time
-        availableTimeDetail:
-          type: string
-          description: |
-            창고 운영시간에 대한 추가 정보
-          example: 금요일엔 1시간 일찍 닫음
-        cctvExist:
-          type: boolean
-          description: cctv 존재 여부
-          default: 'false'
-        securityCompanyExist:
-          type: boolean
-          description: 경비업체 존재 여부
-          default: 'false'
-        securityCompanyName:
-          type: string
-          description: '경비업체 이름, 없으면 null'
-        doorlockExist:
-          type: boolean
-          description: 잠금장치 존재 여부
-          default: 'false'
-        airConditioningType:
-          type: string
-          enum:
-            - HEATING
-            - COOLING
-            - NONE
-          description: 냉난방 정보
-        workerExist:
-          type: boolean
-          description: 관리인력 존재 여부
-          default: 'false'
-        insuranceExist:
-          type: boolean
-          description: 보험 가입여부
-          default: 'false'
-        insuranceName:
-          type: string
-          description: '보험사 이름, 없으면 null'
-        canPickup:
-          type: boolean
-          description: |
-            픽업 서비스 여부
-          default: 'false'
-        canPark:
-          type: boolean
-          description: 방문 시 주차 가능 여부
-          default: 'false'
-        attachmentIds:
-          type: array
-          description: '이미지 id 목록 '
-          items:
-            type: integer
-        location:
-          $ref: '#/components/schemas/NewLocationForm'
     EditWarehouseForm:
       title: EditWarehouseForm
       type: object
@@ -1572,28 +1332,13 @@ components:
         name:
           type: string
           description: 창고 이름
-        type:
+        serviceType:
           type: string
-          enum:
-            - ROOM_TEMPERATURE
-            - LOW_TEMPERATURE
-            - BONDED
-            - SAVAGE
-            - HAZARDOUS
-            - SELF_STORAGE
-            - CONTAINER
           description: |
             창고 종류
-        ownerId:
-          type: integer
-          description: |-
-            창고 주인 id
-
-            이건 못바꿈 -> 항상 403 에러
-        size:
-          type: integer
-          description: '창고 평 수 (단위: 평)'
-          example: 32
+          enum:
+            - GENERAL
+            - AGENCY
         address:
           type: string
           description: 창고 주소
@@ -1629,36 +1374,18 @@ components:
           description: |
             창고 운영시간에 대한 추가 정보
           example: 금요일엔 1시간 일찍 닫음
-        monthlyFee:
-          type: integer
-          description: '월세 (단위: 만원)'
-          example: 100
-        depositFee:
-          type: integer
-          description: '보증금 (단위: 만원)'
-          example: 5000
-        maintenanceFee:
-          type: integer
-          description: '관리비 (단위: 만원)'
-          example: 50
-        minUseTerm:
-          type: integer
-          description: 최소 이 기간만큼은 사용해야함
         cctvExist:
           type: boolean
           description: cctv 존재 여부
-          default: 'false'
         securityCompanyExist:
           type: boolean
           description: 경비업체 존재 여부
-          default: 'false'
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
         doorlockExist:
           type: boolean
           description: 잠금장치 존재 여부
-          default: 'false'
         airConditioningType:
           type: string
           enum:
@@ -1669,11 +1396,9 @@ components:
         workerExist:
           type: boolean
           description: 관리인력 존재 여부
-          default: 'false'
         insuranceExist:
           type: boolean
           description: 보험 가입여부
-          default: 'false'
         insuranceName:
           type: string
           description: '보험사 이름, 없으면 null'
@@ -1681,18 +1406,21 @@ components:
           type: boolean
           description: |
             픽업 서비스 여부
-          default: 'false'
         canPark:
           type: boolean
           description: 방문 시 주차 가능 여부
-          default: 'false'
         attachmentIds:
           type: array
-          description: '이미지 id 목록 '
+          description: 창고 이미지 url 목록
           items:
             type: integer
         location:
-          $ref: '#/components/schemas/NewLocationForm'
+          $ref: '#/components/schemas/LocationInfo'
+        additionalInfo:
+          oneOf:
+            - $ref: '#/components/schemas/AgencyWarehouseDetailInfo'
+            - $ref: '#/components/schemas/GeneralWarehouseDetailInfo'
+          description: '일반 창고와 에이전시 창고에 따라 추가정보 내용이 다름 '
     WarehouseAttachmentInfo:
       title: WarehouseAttachmentInfo
       type: object
@@ -1835,8 +1563,8 @@ components:
         - id
         - url
       description: ''
-    DetailedAgencyWarehouseInfo:
-      title: DetailedAgencyWarehouseInfo
+    DetailedWarehouseInfo:
+      title: DetailedWarehouseInfo
       type: object
       properties:
         id:
@@ -1844,22 +1572,15 @@ components:
         name:
           type: string
           description: 창고 이름
-        type:
+        serviceType:
           type: string
+          description: |
+            창고 종류
           enum:
-            - 3PL
-            - FULLFILMENT
-          description: 에이전시 창고 종류
-        description:
-          type: string
-          description: 상세설명
-        storageType:
-          type: string
-          enum:
-            - PALLET
-            - BOX
-            - SPECIAL
-          description: 물건 보관 방식
+            - GENERAL
+            - AGENCY
+        owner:
+          $ref: '#/components/schemas/SimplifiedUserInfo'
         address:
           type: string
           description: 창고 주소
@@ -1898,18 +1619,15 @@ components:
         cctvExist:
           type: boolean
           description: cctv 존재 여부
-          default: 'false'
         securityCompanyExist:
           type: boolean
           description: 경비업체 존재 여부
-          default: 'false'
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
         doorlockExist:
           type: boolean
           description: 잠금장치 존재 여부
-          default: 'false'
         airConditioningType:
           type: string
           enum:
@@ -1920,11 +1638,9 @@ components:
         workerExist:
           type: boolean
           description: 관리인력 존재 여부
-          default: 'false'
         insuranceExist:
           type: boolean
           description: 보험 가입여부
-          default: 'false'
         insuranceName:
           type: string
           description: '보험사 이름, 없으면 null'
@@ -1932,24 +1648,26 @@ components:
           type: boolean
           description: |
             픽업 서비스 여부
-          default: 'false'
         canPark:
           type: boolean
           description: 방문 시 주차 가능 여부
-          default: 'false'
         attachments:
           type: array
-          description: '이미지 id 목록 '
+          description: 창고 이미지 url 목록
           items:
-            $ref: '#/components/schemas/NewAttachmentInfo'
+            $ref: '#/components/schemas/WarehouseAttachmentInfo'
         location:
-          $ref: '#/components/schemas/NewLocationForm'
+          $ref: '#/components/schemas/LocationInfo'
+        additionalInfo:
+          oneOf:
+            - $ref: '#/components/schemas/AgencyWarehouseDetailInfo'
+            - $ref: '#/components/schemas/GeneralWarehouseDetailInfo'
+          description: '일반 창고와 에이전시 창고에 따라 추가정보 내용이 다름 '
       required:
         - id
         - name
-        - type
-        - description
-        - storageType
+        - serviceType
+        - owner
         - address
         - addressDetail
         - availableWeekdays
@@ -1958,13 +1676,12 @@ components:
         - availableTimeDetail
         - cctvExist
         - securityCompanyExist
-        - securityCompanyName
         - doorlockExist
         - airConditioningType
         - workerExist
         - insuranceExist
-        - insuranceName
         - canPickup
         - canPark
         - attachments
         - location
+        - additionalInfo
