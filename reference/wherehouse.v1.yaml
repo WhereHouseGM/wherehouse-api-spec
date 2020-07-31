@@ -81,6 +81,16 @@ paths:
         - schema:
             type: integer
           in: query
+          name: minSize
+          description: 창고 최소 크기
+        - schema:
+            type: integer
+          in: query
+          name: maxSize
+          description: 창고 최대 크기
+        - schema:
+            type: integer
+          in: query
           name: offset
           description: 창고들 offset 값입니다.
         - schema:
