@@ -38,7 +38,7 @@ paths:
                   warehouses:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SearchedWarehouseInfo'
+                      $ref: '#/components/schemas/SimplifiedWarehouseInfo'
                   message:
                     type: string
                     description: ''
@@ -63,7 +63,7 @@ paths:
                   warehouses:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SearchedWarehouseInfo'
+                      $ref: '#/components/schemas/SimplifiedhouseInfo'
                 required:
                   - warehouses
       operationId: get-v1--warehouses
