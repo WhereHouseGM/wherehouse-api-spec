@@ -1142,7 +1142,7 @@ components:
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
-        doorlockExist:
+        doorLockExist:
           type: boolean
           description: 잠금장치 존재 여부
         airConditioningType:
@@ -1191,7 +1191,7 @@ components:
         - availableTimeDetail
         - cctvExist
         - securityCompanyExist
-        - doorlockExist
+        - doorLockExist
         - airConditioningType
         - workerExist
         - insuranceExist
@@ -1629,7 +1629,7 @@ components:
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
-        doorlockExist:
+        doorLockExist:
           type: boolean
           description: 잠금장치 존재 여부
         airConditioningType:
@@ -1680,7 +1680,7 @@ components:
         - availableTimeDetail
         - cctvExist
         - securityCompanyExist
-        - doorlockExist
+        - doorLockExist
         - airConditioningType
         - workerExist
         - insuranceExist
@@ -1712,7 +1712,36 @@ components:
             - COMPONENT
             - RAW_MATERIAL
           description: 주요 취급 품목
+        payments:
+          type: array
+          items:
+            $ref: ''
       required:
         - id
         - type
         - mainItemType
+    AgencyWarehousePaymentInfo:
+      title: AgencyWarehousePaymentInfo
+      type: object
+      properties:
+        id:
+          type: integer
+        unit:
+          type: string
+        cost:
+          type: integer
+        description:
+          type: string
+        type:
+          type: string
+          enum:
+            - STORE
+            - WORK
+            - DELIVER
+            - OTHER
+      required:
+        - id
+        - unit
+        - cost
+        - description
+        - type
