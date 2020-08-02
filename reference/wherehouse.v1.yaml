@@ -38,7 +38,7 @@ paths:
                   warehouses:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SearchedWarehouseInfo'
+                      $ref: '#/components/schemas/SimplifiedWarehouseInfo'
                   message:
                     type: string
                     description: ''
@@ -63,7 +63,7 @@ paths:
                   warehouses:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SearchedWarehouseInfo'
+                      $ref: '#/components/schemas/SimplifiedWarehouseInfo'
                 required:
                   - warehouses
       operationId: get-v1--warehouses
@@ -78,16 +78,6 @@ paths:
           in: query
           name: addresss
           description: 사용자가 검색한 주소입니다.
-        - schema:
-            type: integer
-          in: query
-          name: minSize
-          description: 창고 최소 크기
-        - schema:
-            type: integer
-          in: query
-          name: maxSize
-          description: 창고 최대 크기
         - schema:
             type: integer
           in: query
@@ -975,10 +965,14 @@ components:
           type: string
           description: '창고명 '
         thumbnailUrl:
-          type: string
+          type:
+            - string
+            - 'null'
           description: '창고 섬네일 이미지 링크 '
         size:
-          type: integer
+          type:
+            - integer
+            - 'null'
           description: 창고 평수
         canUse:
           type: boolean
@@ -1695,3 +1689,30 @@ components:
         - attachments
         - location
         - additionalInfo
+    AgencyWarehouseDetailInfo:
+      title: AgencyWarehouseDetailInfo
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - 3PL
+            - FULLFILMENT
+          description: 3PL vs 풀필먼트 업체
+        mainItemType:
+          type: string
+          enum:
+            - CLOTH
+            - FOOD
+            - ACCESSORY
+            - ELECTRONIC
+            - COSMETIC
+            - COMPONENT
+            - RAW_MATERIAL
+          description: 주요 취급 품목
+      required:
+        - id
+        - type
+        - mainItemType
