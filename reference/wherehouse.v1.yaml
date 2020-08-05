@@ -1046,11 +1046,16 @@ components:
             - string
             - 'null'
           description: '창고 섬네일 이미지 링크 '
-        size:
+        landArea:
           type:
             - integer
             - 'null'
-          description: 창고 평수
+          description: '창고 대지면적'
+        totalArea:
+          type:
+            - integer
+            - 'null'
+          description: '창고 연면적'
         canUse:
           type: boolean
           description: '창고 임대 가능 여부 '
