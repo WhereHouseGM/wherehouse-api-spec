@@ -1252,6 +1252,9 @@ components:
         canPark:
           type: boolean
           description: 방문 시 주차 가능 여부
+        parkingScale:
+          type: integer
+          description: 주차장 규모
         attachmentIds:
           type: array
           description: 창고 이미지 url 목록
@@ -1270,14 +1273,8 @@ components:
         - address
         - addressDetail
         - availableWeekdays
-        - openAt
-        - closeAt
-        - availableTimeDetail
         - cctvExist
         - securityCompanyExist
-        - doorLockExist
-        - airConditioningType
-        - workerExist
         - insuranceExist
         - canPickup
         - canPark
