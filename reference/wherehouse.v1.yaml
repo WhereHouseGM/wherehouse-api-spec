@@ -127,17 +127,6 @@ paths:
                 properties:
                   message:
                     type: string
-        '403':
-          description: |-
-            Forbidden
-            사용자가 로그인했지만 권한이 없을 때
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
       description: |-
         새로운 창고를 등록합니다
 
@@ -1050,12 +1039,12 @@ components:
           type:
             - integer
             - 'null'
-          description: '창고 대지면적'
+          description: 창고 대지면적
         totalArea:
           type:
             - integer
             - 'null'
-          description: '창고 연면적'
+          description: 창고 연면적
         canUse:
           type: boolean
           description: '창고 임대 가능 여부 '
