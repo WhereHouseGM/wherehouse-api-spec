@@ -63,7 +63,7 @@ paths:
                   warehouses:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SimplifiedhouseInfo'
+                      $ref: '#/components/schemas/SimplifiedWarehouseInfo'
                 required:
                   - warehouses
       operationId: get-v1--warehouses
@@ -78,16 +78,6 @@ paths:
           in: query
           name: addresss
           description: 사용자가 검색한 주소입니다.
-        - schema:
-            type: integer
-          in: query
-          name: minSize
-          description: 창고 최소 크기
-        - schema:
-            type: integer
-          in: query
-          name: maxSize
-          description: 창고 최대 크기
         - schema:
             type: integer
           in: query
@@ -166,6 +156,83 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/NewWarehouseForm'
+            examples:
+              new agency warehouse:
+                value:
+                  name: string
+                  serviceType: AGENCY
+                  address: 경기 성남시 야탑동 장미로 55
+                  addressDetail: 108동 101호
+                  description: string
+                  availableWeekdays: 0
+                  openAt: '08:00:00'
+                  closeAt: '19:00:00'
+                  availableTimeDetail: 금요일엔 1시간 일찍 닫음
+                  cctvExist: true
+                  securityCompanyExist: true
+                  securityCompanyName: string
+                  doorLockExist: true
+                  airConditioningType: HEATING
+                  workerExist: true
+                  insuranceExist: true
+                  insuranceName: string
+                  canPickup: true
+                  canPark: true
+                  attachmentIds:
+                    - 0
+                  location:
+                    latitude: 0
+                    longitude: 0
+                  additionalInfo:
+                    type: 3PL
+                    mainItemType: CLOTH
+                    payments:
+                      - unit: string
+                        cost: 0
+                        description: string
+                        type: STORE
+                      - unit: 다스
+                        cost: 1000
+                        description: 연필 보관
+                        type: STORE
+                      - unit: KG
+                        cost: 100
+                        description: 물건 옮기기
+                        type: WORK
+              new general warehouse:
+                value:
+                  name: string
+                  serviceType: GENERAL
+                  address: 경기 성남시 야탑동 장미로 55
+                  addressDetail: 108동 101호
+                  description: string
+                  availableWeekdays: 0
+                  openAt: '08:00:00'
+                  closeAt: '19:00:00'
+                  availableTimeDetail: 금요일엔 1시간 일찍 닫음
+                  cctvExist: true
+                  securityCompanyExist: true
+                  securityCompanyName: string
+                  doorLockExist: true
+                  airConditioningType: HEATING
+                  workerExist: true
+                  insuranceExist: true
+                  insuranceName: string
+                  canPickup: true
+                  canPark: true
+                  attachmentIds:
+                    - 0
+                  location:
+                    latitude: 0
+                    longitude: 0
+                  additionalInfo:
+                    type: ROOM_TEMPERATURE
+                    size: 100
+                    monthlyFee: 300
+                    depositFee: 5000
+                    maintenanceFee: 10
+                    minUseTerm: 1
+        description: ''
       tags:
         - warehouses
     parameters: []
@@ -960,7 +1027,7 @@ paths:
                     format: binary
         description: ''
       tags:
-        - images
+        - attachments
 components:
   schemas:
     SimplifiedWarehouseInfo:
@@ -975,11 +1042,20 @@ components:
           type: string
           description: '창고명 '
         thumbnailUrl:
-          type: string
+          type:
+            - string
+            - 'null'
           description: '창고 섬네일 이미지 링크 '
-        size:
-          type: integer
-          description: 창고 평수
+        landArea:
+          type:
+            - integer
+            - 'null'
+          description: '창고 대지면적'
+        totalArea:
+          type:
+            - integer
+            - 'null'
+          description: '창고 연면적'
         canUse:
           type: boolean
           description: '창고 임대 가능 여부 '
@@ -1112,6 +1188,8 @@ components:
           type: string
           description: 칭고 상세주소
           example: 108동 101호
+        description:
+          type: string
         availableWeekdays:
           type: integer
           description: |-
@@ -1148,7 +1226,7 @@ components:
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
-        doorlockExist:
+        doorLockExist:
           type: boolean
           description: 잠금장치 존재 여부
         airConditioningType:
@@ -1174,17 +1252,20 @@ components:
         canPark:
           type: boolean
           description: 방문 시 주차 가능 여부
+        parkingScale:
+          type: integer
+          description: 주차장 규모
         attachmentIds:
           type: array
           description: 창고 이미지 url 목록
           items:
             type: integer
         location:
-          $ref: '#/components/schemas/LocationInfo'
+          $ref: '#/components/schemas/NewLocationForm'
         additionalInfo:
           oneOf:
-            - $ref: '#/components/schemas/AgencyWarehouseDetailInfo'
-            - $ref: '#/components/schemas/GeneralWarehouseDetailInfo'
+            - $ref: '#/components/schemas/NewAgencyWarehouseDetail'
+            - $ref: '#/components/schemas/NewGeneralWarehouseDetail'
           description: '일반 창고와 에이전시 창고에 따라 추가정보 내용이 다름 '
       required:
         - name
@@ -1192,148 +1273,17 @@ components:
         - address
         - addressDetail
         - availableWeekdays
-        - openAt
-        - closeAt
-        - availableTimeDetail
         - cctvExist
         - securityCompanyExist
-        - doorlockExist
-        - airConditioningType
-        - workerExist
         - insuranceExist
         - canPickup
         - canPark
         - attachmentIds
         - location
         - additionalInfo
-    NewAgencyWarehouseForm:
-      title: NewAgencyWarehouseForm
-      type: object
-      properties:
-        name:
-          type: string
-          description: 창고 이름
-        type:
-          type: string
-          enum:
-            - 3PL
-            - FULLFILMENT
-          description: 에이전시 창고 종류
-        description:
-          type: string
-          description: 상세설명
-        storageType:
-          type: string
-          enum:
-            - PALLET
-            - BOX
-            - SPECIAL
-          description: 물건 보관 방식
-        address:
-          type: string
-          description: 창고 주소
-          example: 경기 성남시 야탑동 장미로 55
-        addressDetail:
-          type: string
-          description: 칭고 상세주소
-          example: 108동 101호
-        availableWeekdays:
-          type: integer
-          description: |-
-            사용 가능한 요일에 대한 이진 플래그
-
-            2^0~2^6가 일~토에 매칭됨
-
-            ex.
-            모든 요일 불가능 -> 0
-            일요일만 가능 -> 1 (2^0)
-            월요일만 가능 -> 2 (2^1)
-            일요일, 월요일만 가능 -> 3 (2^0 | 2^1)
-            수요일만 가능 -> 16 (2^4)
-          example: 0
-        openAt:
-          type: string
-          description: 창고 여는 시간
-          format: time
-        closeAt:
-          type: string
-          description: '창고 닫는 시간 '
-          format: time
-        availableTimeDetail:
-          type: string
-          description: |
-            창고 운영시간에 대한 추가 정보
-          example: 금요일엔 1시간 일찍 닫음
-        cctvExist:
-          type: boolean
-          description: cctv 존재 여부
-          default: 'false'
-        securityCompanyExist:
-          type: boolean
-          description: 경비업체 존재 여부
-          default: 'false'
-        securityCompanyName:
-          type: string
-          description: '경비업체 이름, 없으면 null'
-        doorlockExist:
-          type: boolean
-          description: 잠금장치 존재 여부
-          default: 'false'
-        airConditioningType:
-          type: string
-          enum:
-            - HEATING
-            - COOLING
-            - NONE
-          description: 냉난방 정보
-        workerExist:
-          type: boolean
-          description: 관리인력 존재 여부
-          default: 'false'
-        insuranceExist:
-          type: boolean
-          description: 보험 가입여부
-          default: 'false'
-        insuranceName:
-          type: string
-          description: '보험사 이름, 없으면 null'
-        canPickup:
-          type: boolean
-          description: |
-            픽업 서비스 여부
-          default: 'false'
-        canPark:
-          type: boolean
-          description: 방문 시 주차 가능 여부
-          default: 'false'
-        attachmentIds:
-          type: array
-          description: '이미지 id 목록 '
-          items:
-            type: integer
-        location:
-          $ref: '#/components/schemas/NewLocationForm'
-      required:
-        - name
-        - type
         - description
-        - storageType
-        - address
-        - addressDetail
-        - availableWeekdays
-        - openAt
-        - closeAt
-        - availableTimeDetail
-        - cctvExist
-        - securityCompanyExist
-        - doorlockExist
-        - airConditioningType
-        - workerExist
-        - insuranceExist
-        - canPickup
-        - canPark
-        - attachmentIds
-        - location
+      description: ''
+      x-examples: {}
     EditWarehouseForm:
       title: EditWarehouseForm
       type: object
@@ -1560,19 +1510,6 @@ components:
           type: string
         phoneNumber:
           type: string
-    NewAttachmentInfo:
-      title: AttachmentInfo
-      type: object
-      properties:
-        id:
-          type: integer
-        url:
-          type: string
-          format: uri
-      required:
-        - id
-        - url
-      description: ''
     DetailedWarehouseInfo:
       title: DetailedWarehouseInfo
       type: object
@@ -1635,7 +1572,7 @@ components:
         securityCompanyName:
           type: string
           description: '경비업체 이름, 없으면 null'
-        doorlockExist:
+        doorLockExist:
           type: boolean
           description: 잠금장치 존재 여부
         airConditioningType:
@@ -1686,7 +1623,7 @@ components:
         - availableTimeDetail
         - cctvExist
         - securityCompanyExist
-        - doorlockExist
+        - doorLockExist
         - airConditioningType
         - workerExist
         - insuranceExist
@@ -1695,3 +1632,164 @@ components:
         - attachments
         - location
         - additionalInfo
+    AgencyWarehouseDetailInfo:
+      title: AgencyWarehouseDetailInfo
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - 3PL
+            - FULLFILMENT
+          description: 3PL vs 풀필먼트 업체
+        mainItemType:
+          type: string
+          enum:
+            - CLOTH
+            - FOOD
+            - ACCESSORY
+            - ELECTRONIC
+            - COSMETIC
+            - COMPONENT
+            - RAW_MATERIAL
+          description: 주요 취급 품목
+        storageType:
+          type: string
+          enum:
+            - PALLET
+            - BOX
+            - SPECIAL
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgencyWarehousePaymentInfo'
+      required:
+        - id
+        - type
+        - mainItemType
+        - payments
+        - storageType
+    AgencyWarehousePaymentInfo:
+      title: AgencyWarehousePaymentInfo
+      type: object
+      properties:
+        id:
+          type: integer
+        unit:
+          type: string
+        cost:
+          type: integer
+        description:
+          type: string
+        type:
+          type: string
+          enum:
+            - STORE
+            - WORK
+            - DELIVER
+            - OTHER
+      required:
+        - id
+        - unit
+        - cost
+        - description
+        - type
+    NewAgencyWarehouseDetailForm:
+      title: NewAgencyWarehouseDetail
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - 3PL
+            - FULLFILMENT
+          description: 3PL vs 풀필먼트 업체
+        mainItemType:
+          type: string
+          enum:
+            - CLOTH
+            - FOOD
+            - ACCESSORY
+            - ELECTRONIC
+            - COSMETIC
+            - COMPONENT
+            - RAW_MATERIAL
+          description: 주요 취급 품목
+        storageType:
+          type: string
+          enum:
+            - PALLET
+            - BOX
+            - SPECIAL
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewAgencyWarehousePaymentForm'
+    NewAgencyWarehousePaymentForm:
+      title: NewAgencyWarehousePaymentForm
+      type: object
+      properties:
+        unit:
+          type: string
+        cost:
+          type: integer
+        description:
+          type: string
+        type:
+          type: string
+          enum:
+            - STORE
+            - WORK
+            - DELIVER
+            - OTHER
+      required:
+        - id
+        - unit
+        - cost
+        - description
+        - type
+    NewGeneralWarehouseDetail:
+      title: NewGeneralWarehouseDetail
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ROOM_TEMPERATURE
+            - LOW_TEMPERATURE
+            - BONDED
+            - SAVAGE
+            - HAZARDOUS
+            - SELF_STORAGE
+            - CONTAINER
+          description: |
+            창고 종류
+        size:
+          type: integer
+          description: '창고 평 수 (단위: 평)'
+          example: 32
+        monthlyFee:
+          type: integer
+          description: '월세 (단위: 만원)'
+          example: 100
+        depositFee:
+          type: integer
+          description: '보증금 (단위: 만원)'
+          example: 5000
+        maintenanceFee:
+          type: integer
+          description: '관리비 (단위: 만원)'
+          example: 50
+        minUseTerm:
+          type: integer
+          description: |-
+            최소 이 기간만큼은 사용해야함
+            단위: 달
+      required:
+        - type
+        - size
+        - monthlyFee
+        - depositFee
+        - maintenanceFee
