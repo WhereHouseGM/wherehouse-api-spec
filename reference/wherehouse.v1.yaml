@@ -39,12 +39,8 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/SimplifiedWarehouseInfo'
-                  message:
-                    type: string
-                    description: ''
                 required:
                   - warehouses
-                  - message
         '400':
           description: "Bad Request\n잘못된 요청 보냈을 때 "
           content:
@@ -54,18 +50,6 @@ paths:
                 properties:
                   message:
                     type: string
-        '':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  warehouses:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/SimplifiedWarehouseInfo'
-                required:
-                  - warehouses
       operationId: get-v1--warehouses
       description: |-
         창고 목록을 조회하는 API입니다
@@ -88,7 +72,6 @@ paths:
           in: query
           name: limit
           description: '불러올 창고 목록 개수입니다 '
-    /v1/warehouses: null
     post:
       summary: 새로운 창고 등록
       operationId: post-v1-warehouses
@@ -291,12 +274,6 @@ paths:
             Bearer 토큰 값입니다.
             jwt 토큰을 사용합니다.
           required: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-        description: ''
     parameters:
       - schema:
           type: string
@@ -1031,19 +1008,13 @@ components:
           type: string
           description: '창고명 '
         thumbnailUrl:
-          type:
-            - string
-            - 'null'
+          type: string
           description: '창고 섬네일 이미지 링크 '
         landArea:
-          type:
-            - integer
-            - 'null'
+          type: integer
           description: 창고 대지면적
         totalArea:
-          type:
-            - integer
-            - 'null'
+          type: integer
           description: 창고 연면적
         canUse:
           type: boolean
@@ -1054,7 +1025,6 @@ components:
         - id
         - name
         - thumbnailUrl
-        - size
         - canUse
         - location
     LocationInfo:
@@ -1158,6 +1128,8 @@ components:
     NewWarehouseForm:
       title: NewWarehouseForm
       type: object
+      description: ''
+      x-examples: {}
       properties:
         name:
           type: string
@@ -1253,14 +1225,15 @@ components:
           $ref: '#/components/schemas/NewLocationForm'
         additionalInfo:
           oneOf:
-            - $ref: '#/components/schemas/NewAgencyWarehouseDetail'
-            - $ref: '#/components/schemas/NewGeneralWarehouseDetail'
+            - $ref: '#/components/schemas/NewAgencyWarehouseDetailForm'
+            - $ref: '#/components/schemas/NewGeneralWarehouseDetailForm'
           description: '일반 창고와 에이전시 창고에 따라 추가정보 내용이 다름 '
       required:
         - name
         - serviceType
         - address
         - addressDetail
+        - description
         - availableWeekdays
         - cctvExist
         - securityCompanyExist
@@ -1270,9 +1243,6 @@ components:
         - attachmentIds
         - location
         - additionalInfo
-        - description
-      description: ''
-      x-examples: {}
     EditWarehouseForm:
       title: EditWarehouseForm
       type: object
@@ -1739,8 +1709,8 @@ components:
         - cost
         - description
         - type
-    NewGeneralWarehouseDetail:
-      title: NewGeneralWarehouseDetail
+    NewGeneralWarehouseDetailForm:
+      title: NewGeneralWarehouseDetailForm
       type: object
       properties:
         type:
