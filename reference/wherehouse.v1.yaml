@@ -433,10 +433,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  warehouse:
+                  review:
                     $ref: '#/components/schemas/WarehouseReviewInfo'
                 required:
-                  - warehouse
+                  - review
         '400':
           description: |-
             Bad Request
@@ -507,10 +507,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  warehouse:
+                  review:
                     $ref: '#/components/schemas/WarehouseReviewInfo'
                 required:
-                  - warehouse
+                  - review
               examples: {}
           headers: {}
         '400':
