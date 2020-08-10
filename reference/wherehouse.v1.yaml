@@ -362,8 +362,7 @@ paths:
             창고 삭제 성공했을때
           content:
             application/json:
-              schema:
-                type: object
+              schema: {}
         '400':
           description: |-
             Bad Request
@@ -591,8 +590,7 @@ paths:
             리뷰 삭제 성공했을때
           content:
             application/json:
-              schema:
-                type: object
+              schema: {}
         '400':
           description: |-
             Bad Request
@@ -1063,7 +1061,11 @@ components:
             - CONTAINER
           description: |
             창고 종류
-        size:
+        landArea:
+          type: integer
+          description: '창고 평 수 (단위: 평)'
+          example: 32
+        totalArea:
           type: integer
           description: '창고 평 수 (단위: 평)'
           example: 32
@@ -1085,7 +1087,7 @@ components:
       required:
         - id
         - type
-        - size
+        - landArea
         - monthlyFee
         - depositFee
         - maintenanceFee
