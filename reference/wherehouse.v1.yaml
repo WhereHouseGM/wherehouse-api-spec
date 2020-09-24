@@ -1256,6 +1256,24 @@ components:
             type: integer
         location:
           $ref: '#/components/schemas/NewLocationForm'
+        landArea:
+          type: integer
+          description: '창고 평 수 (단위: 평)'
+          example: 32
+        totalArea:
+          type: integer
+        types:
+          type: string
+          enum:
+            - ROOM_TEMPERATURE
+            - LOW_TEMPERATURE
+            - BONDED
+            - SAVAGE
+            - HAZARDOUS
+            - SELF_STORAGE
+            - CONTAINER
+          description: |
+            창고 종류
         additionalInfo:
           oneOf:
             - $ref: '#/components/schemas/NewAgencyWarehouseDetailForm'
@@ -1771,24 +1789,6 @@ components:
       type: object
       description: ''
       properties:
-        types:
-          type: string
-          enum:
-            - ROOM_TEMPERATURE
-            - LOW_TEMPERATURE
-            - BONDED
-            - SAVAGE
-            - HAZARDOUS
-            - SELF_STORAGE
-            - CONTAINER
-          description: |
-            창고 종류
-        landArea:
-          type: integer
-          description: '창고 평 수 (단위: 평)'
-          example: 32
-        totalArea:
-          type: integer
         monthlyFee:
           type: integer
           description: '월세 (단위: 만원)'
