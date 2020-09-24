@@ -199,8 +199,9 @@ paths:
                   location:
                     latitude: 0
                     longitude: 0
+                  type:
+                    - ROOM_TEMPERATURE
                   additionalInfo:
-                    type: ROOM_TEMPERATURE
                     size: 100
                     monthlyFee: 300
                     depositFee: 5000
