@@ -42,7 +42,9 @@ paths:
                 required:
                   - warehouses
         '400':
-          description: "Bad Request\n잘못된 요청 보냈을 때 "
+          description: |-
+            Bad Request
+            잘못된 요청 보냈을 때 
           content:
             application/json:
               schema:
@@ -263,7 +265,9 @@ paths:
                   message:
                     type: string
       operationId: get-v1-warehouse
-      description: "창고 상세정보를 가져옵니다.\n창고 상세정보 페이지에서 사용할 수 있습니다. "
+      description: |-
+        창고 상세정보를 가져옵니다.
+        창고 상세정보 페이지에서 사용할 수 있습니다. 
       parameters:
         - schema:
             type: string
@@ -657,7 +661,13 @@ paths:
                     type: string
                   tokenType:
                     type: string
-                    description: "토큰 종류\naccessToken과 concat해서 사용하면 됨\n\nex. `${tokenType} ${accessToken}` \n\n     -> Bearer ${accessToken}"
+                    description: |-
+                      토큰 종류
+                      accessToken과 concat해서 사용하면 됨
+
+                      ex. `${tokenType} ${accessToken}` 
+
+                           -> Bearer ${accessToken}
                     default: Bearer
                   user:
                     $ref: '#/components/schemas/SimplifiedUserInfo'
@@ -668,7 +678,9 @@ paths:
         '400':
           description: Bad Request
         '409':
-          description: "Conflict\n중복된 이메일로 회원가입을 시도했을 때입니다 "
+          description: |-
+            Conflict
+            중복된 이메일로 회원가입을 시도했을 때입니다 
           content:
             application/json:
               schema:
@@ -702,7 +714,13 @@ paths:
                     type: string
                   tokenType:
                     type: string
-                    description: "토큰 종류\naccessToken과 concat해서 사용하면 됨\n\nex. `${tokenType} ${accessToken}` \n\n     -> Bearer ${accessToken}"
+                    description: |-
+                      토큰 종류
+                      accessToken과 concat해서 사용하면 됨
+
+                      ex. `${tokenType} ${accessToken}` 
+
+                           -> Bearer ${accessToken}
                     default: Bearer
                   user:
                     $ref: '#/components/schemas/SimplifiedUserInfo'
@@ -775,7 +793,9 @@ paths:
                   message:
                     type: string
         '401':
-          description: "Unauthorized\n사용자가 로그인 하지 않았을때 또는 access token 값에 이상이 있을 때 "
+          description: |-
+            Unauthorized
+            사용자가 로그인 하지 않았을때 또는 access token 값에 이상이 있을 때 
           content:
             application/json:
               schema:
@@ -924,7 +944,13 @@ paths:
                     type: string
                   tokenType:
                     type: string
-                    description: "토큰 종류\naccessToken과 concat해서 사용하면 됨\n\nex. `${tokenType} ${accessToken}` \n\n     -> Bearer ${accessToken}"
+                    description: |-
+                      토큰 종류
+                      accessToken과 concat해서 사용하면 됨
+
+                      ex. `${tokenType} ${accessToken}` 
+
+                           -> Bearer ${accessToken}
                     default: Bearer
                 required:
                   - accessToken
@@ -1659,6 +1685,7 @@ components:
     AgencyWarehouseDetailInfo:
       title: AgencyWarehouseDetailInfo
       type: object
+      description: ''
       properties:
         id:
           type: integer
@@ -1691,13 +1718,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgencyWarehousePaymentInfo'
+        deliveryCompanies:
+          type: array
+          description: 제휴 택배사
+          items:
+            type: string
       required:
         - id
         - type
         - mainItemTypes
         - storageType
         - payments
-      description: ''
     AgencyWarehousePaymentInfo:
       title: AgencyWarehousePaymentInfo
       type: object
@@ -1756,6 +1787,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NewAgencyWarehousePaymentForm'
+        deliveryCompanies:
+          type: array
+          description: 제휴 택배사
+          items:
+            type: string
       required:
         - type
         - mainItemTypes
