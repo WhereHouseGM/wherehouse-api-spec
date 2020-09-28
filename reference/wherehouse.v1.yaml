@@ -1310,16 +1310,9 @@ components:
         - name
         - serviceType
         - address
-        - addressDetail
-        - description
-        - availableWeekdays
-        - cctvExist
-        - securityCompanyExist
-        - insuranceExist
-        - canPickup
-        - canPark
         - attachmentIds
         - location
+        - types
         - additionalInfo
     EditWarehouseForm:
       title: EditWarehouseForm
@@ -1796,8 +1789,7 @@ components:
       required:
         - type
         - mainItemTypes
-        - storageType
-        - payments
+        - deliveryCompanies
     NewAgencyWarehousePaymentForm:
       title: NewAgencyWarehousePaymentForm
       type: object
@@ -1843,13 +1835,6 @@ components:
           description: |-
             최소 이 기간만큼은 사용해야함
             단위: 달
-      required:
-        - types
-        - landArea
-        - totalArea
-        - monthlyFee
-        - depositFee
-        - maintenanceFee
     DeliveryTypeInfo:
       title: DeliveryTypeInfo
       type: object
